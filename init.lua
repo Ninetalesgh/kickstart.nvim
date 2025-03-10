@@ -80,7 +80,7 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   -- Use `opts = {}` to automatically pass options to a plugin's `setup()` function, forcing the plugin to be loaded.
-  
+
   -- See `:help gitsigns` to understand what the configuration keys do
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -98,12 +98,12 @@ require('lazy').setup({
   -- NOTE: Custom plugins.
   {
     'mbbill/undotree',
-      opts = {}
+    config = function() end,
   },
 
   {
     'tpope/vim-fugitive',
-      opts = {}
+    config = function() end,
   },
 
   -- NOTE: Plugins can specify dependencies.
