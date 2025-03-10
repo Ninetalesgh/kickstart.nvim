@@ -2,6 +2,7 @@ vim.keymap.set('i', 'jj', '<Esc>')
 vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
 vim.keymap.set('n', '<leader>gs', vim.cmd.Git)
+vim.keymap.set('n', '<leader>gp', ':Git push<CR>')
 -- Close tab
 vim.keymap.set('n', '<C-q>', ':q<CR>')
 vim.keymap.set('i', '<C-o><C-q>', ':q<CR>')
