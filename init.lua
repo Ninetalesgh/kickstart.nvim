@@ -102,6 +102,13 @@ require('lazy').setup({
   },
 
   {
+    'folke/trouble.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    opts = {},
+    cmd = 'Trouble',
+  },
+
+  {
     'tpope/vim-fugitive',
     config = function() end,
   },

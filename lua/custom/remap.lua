@@ -11,7 +11,7 @@ vim.keymap.set('n', '<C-s>', ':w<CR>')
 vim.keymap.set('i', '<C-o><C-s>', ':w<CR>')
 -- Move selection up and down
 vim.keymap.set('v', '<M-j>', ":m '>+1<CR>gv=gv")
-vim.keymap.set('v', '<>', ":m '<-2<CR>gv=gv")
+vim.keymap.set('v', '<M-k>', ":m '<-2<CR>gv=gv")
 -- Append line below to current line
 vim.keymap.set('n', 'J', 'mzJ`z')
 -- Jump with stable cursor
