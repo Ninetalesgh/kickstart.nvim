@@ -1,3 +1,7 @@
+# Custom dependencies
+
+Install rust to use cargo for codelldb
+
 # kickstart.nvim
 
 ## Introduction
