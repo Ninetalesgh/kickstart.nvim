@@ -58,6 +58,7 @@ vim.keymap.set('n', '<F7>', dap.step_into)
 vim.keymap.set('n', '<F8>', dap.step_out)
 
 -- [TODO] keymaps for :Trouble and :ToggleTerm
+-- [TODO] keymaps for beginning of line left to wrap up? w to stop at EOL! CTRL F to work in i
 -- [TODO] keymaps for CTRL <- and CTRL DEL in 'i', as well as CTRL S
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
