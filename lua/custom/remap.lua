@@ -29,10 +29,10 @@ vim.keymap.set('n', '<leader>Y', '"+Y')
 -- Nah?
 vim.keymap.set('n', 'Q', '<nop>')
 -- Quick fix navigation
-vim.keymap.set('n', '<C-k>', '<cmd>cnext<CR>zz')
-vim.keymap.set('n', '<C-j>', '<cmd>cprev<CR>zz')
-vim.keymap.set('n', '<leader>k', '<cmd>lnext<CR>zz')
-vim.keymap.set('n', '<leader>j', '<cmd>lprev<CR>zz')
+--vim.keymap.set('n', '<C-k>', '<cmd>cnext<CR>zz')
+--vim.keymap.set('n', '<C-j>', '<cmd>cprev<CR>zz')
+--vim.keymap.set('n', '<leader>k', '<cmd>lnext<CR>zz')
+--vim.keymap.set('n', '<leader>j', '<cmd>lprev<CR>zz')
 -- Replace current word match
 vim.keymap.set('n', '<leader>s', ':%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>')
 -- Make the current file executable
@@ -40,13 +40,22 @@ vim.keymap.set('n', '<leader>x', '<cmd>!chmod +x %<CR>', { silent = true })
 -- Clear highlights on search when pressing <Esc> in normal mode
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
+vim.keymap.set('n', '<leader>k', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
+vim.keymap.set('n', '<leader>j', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open diagnostic [E]rror messages' })
 -- Jumplist
 vim.keymap.set('n', '<M-h>', '<C-o>', { desc = 'Jump back in jumplist' })
 vim.keymap.set('n', '<M-l>', '<C-i>', { desc = 'Jump forward in jumplist' })
+-- Debugger
+local dap = require 'dap'
+vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint)
+vim.keymap.set('n', '<leader>gb', dap.run_to_cursor)
+vim.keymap.set('n', '<F5>', dap.continue)
+vim.keymap.set('n', '<F6>', dap.step_over)
+vim.keymap.set('n', '<S-F6>', dap.step_back)
+vim.keymap.set('n', '<F7>', dap.step_into)
+vim.keymap.set('n', '<F8>', dap.step_out)
 
 -- [TODO] keymaps for :Trouble and :ToggleTerm
 

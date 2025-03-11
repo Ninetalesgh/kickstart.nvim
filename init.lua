@@ -97,15 +97,78 @@ require('lazy').setup({
 
   -- NOTE: Custom plugins.
   {
+    'williamboman/mason.nvim',
+    opts = {
+      ensure_installed = { 'clangd', 'clang-format', 'codelldb' },
+    },
+  },
+  {
     'mbbill/undotree',
     config = function() end,
   },
 
   {
+    'mg979/vim-visual-multi',
+    config = function() end,
+  },
+  {
+    'mfussenegger/nvim-dap',
+    config = function() end,
+  },
+  {
     'akinsho/toggleterm.nvim',
     name = 'toggleterm',
     config = function()
       require('toggleterm').setup()
+    end,
+  },
+  {
+    'rcarriga/nvim-dap-ui',
+    event = 'VeryLazy',
+    dependencies = {
+      'mfussenegger/nvim-dap',
+    },
+    config = function()
+      local dap = require 'dap'
+      local ui = require 'dapui'
+      dap.set_log_level 'TRACE'
+      dap.listeners.before.attach.dapui_config = function()
+        ui.open()
+      end
+      dap.listeners.before.launch.dapui_config = function()
+        ui.open()
+      end
+      dap.listeners.before.event_terminated.dapui_config = function()
+        ui.close()
+      end
+      dap.listeners.before.event_exited.dapui_config = function()
+        ui.close()
+      end
+    end,
+  },
+  {
+    'jay-babu/mason-nvim-dap.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'williamboman/mason.nvim',
+      'mfussenegger/nvim-dap',
+    },
+    opts = {
+      handlers = {},
+      ensure_installed = { 'codelldb' },
+    },
+  },
+  {
+    'mfussenegger/nvim-dap',
+    dependencies = {
+      'rcarriga/nvim-dap-ui',
+      'theHamsta/nvim-dap-virtual-text',
+      'nvim-neotest/nvim-nio',
+      'julianolf/nvim-dap-lldb',
+    },
+    config = function()
+      local ui = require 'dapui'
+      ui.setup()
     end,
   },
 
@@ -377,7 +440,7 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
@@ -426,7 +489,7 @@ require('lazy').setup({
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
-        ensure_installed = { 'ols' }, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+        ensure_installed = { 'ols' },
         automatic_installation = false,
         handlers = {
           function(server_name)
