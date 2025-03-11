@@ -10,8 +10,8 @@ vim.keymap.set('i', '<C-o><C-q>', ':q<CR>')
 vim.keymap.set('n', '<C-s>', ':w<CR>')
 vim.keymap.set('i', '<C-o><C-s>', ':w<CR>')
 -- Move selection up and down
-vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
-vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
+vim.keymap.set('v', '<M-j>', ":m '>+1<CR>gv=gv")
+vim.keymap.set('v', '<>', ":m '<-2<CR>gv=gv")
 -- Append line below to current line
 vim.keymap.set('n', 'J', 'mzJ`z')
 -- Jump with stable cursor
@@ -44,6 +44,9 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open diagnostic [E]rror messages' })
+-- Jumplist
+vim.keymap.set('n', '<M-h>', '<C-o>', { desc = 'Jump back in jumplist' })
+vim.keymap.set('n', '<M-l>', '<C-i>', { desc = 'Jump forward in jumplist' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
