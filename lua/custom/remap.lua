@@ -8,7 +8,7 @@ vim.keymap.set('n', '<C-q>', ':wq<CR>')
 vim.keymap.set('i', '<C-o><C-q>', ':q<CR>')
 -- Save buffer
 vim.keymap.set('n', '<C-s>', ':w<CR>')
-vim.keymap.set('i', '<C-o><C-s>', ':w<CR>')
+vim.keymap.set('i', '<C-c><C-s>', ':w<CR>')
 -- Move selection up and down
 vim.keymap.set('v', '<M-j>', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', '<M-k>', ":m '<-2<CR>gv=gv")
@@ -58,6 +58,7 @@ vim.keymap.set('n', '<F7>', dap.step_into)
 vim.keymap.set('n', '<F8>', dap.step_out)
 
 -- [TODO] keymaps for :Trouble and :ToggleTerm
+-- [TODO] keymaps for CTRL <- and CTRL DEL in 'i', as well as CTRL S
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
