@@ -13,7 +13,7 @@ local cfg = {
   configurations = {
     odin = {
       {
-        name = 'Launch debugger',
+        name = 'Debugger',
         type = 'lldb',
         request = 'launch',
         cwd = '${workspaceFolder}',
