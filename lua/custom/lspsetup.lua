@@ -1,7 +1,10 @@
 local lspconfig = require 'lspconfig'
 
 lspconfig.ols.setup {
-  cmd = { 'ols' },
-  filetypes = { 'odin' },
-  root_dir = lspconfig.util.root_pattern('ols.json', '.git', 'odin.mod'),
+  init_options = {
+    checker_args = '-strict-style',
+    collection = {
+      { name = 'shared', path = vim.fn.expand '$ODIN_ROOT' },
+    },
+  },
 }
