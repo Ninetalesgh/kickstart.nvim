@@ -4,7 +4,7 @@ vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
 vim.keymap.set('n', '<leader>gs', vim.cmd.Git)
 vim.keymap.set('n', '<leader>gp', ':Git push<CR>')
 -- Close tab
-vim.keymap.set('n', '<C-q>', ':q<CR>')
+vim.keymap.set('n', '<C-q>', ':wq<CR>')
 vim.keymap.set('i', '<C-o><C-q>', ':q<CR>')
 -- Save buffer
 vim.keymap.set('n', '<C-s>', ':w<CR>')
@@ -48,13 +48,16 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open diagn
 vim.keymap.set('n', '<M-h>', '<C-o>', { desc = 'Jump back in jumplist' })
 vim.keymap.set('n', '<M-l>', '<C-i>', { desc = 'Jump forward in jumplist' })
 
+-- [TODO] keymaps for :Trouble and :ToggleTerm
+
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
 --
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>:q<CR>', { desc = 'Exit terminal mode' })
+vim.keymap.set('t', '<C-q>', '<C-\\><C-n>:q<CR>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
