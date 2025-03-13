@@ -5,10 +5,10 @@ vim.keymap.set('n', '<leader>gs', vim.cmd.Git)
 vim.keymap.set('n', '<leader>gp', ':Git push<CR>')
 -- Close tab
 vim.keymap.set('n', '<C-q>', ':wq<CR>')
-vim.keymap.set('i', '<C-o><C-q>', ':q<CR>')
+vim.keymap.set('i', '<C-q>', '<C-o>:q<CR>', { silent = true })
 -- Save buffer
 vim.keymap.set('n', '<C-s>', ':w<CR>')
-vim.keymap.set('i', '<C-c><C-s>', ':w<CR>')
+vim.keymap.set('i', '<C-s>', '<Esc>:w<CR>')
 -- Move selection up and down
 vim.keymap.set('v', '<M-j>', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', '<M-k>', ":m '<-2<CR>gv=gv")
@@ -58,8 +58,14 @@ vim.keymap.set('n', '<F7>', dap.step_into)
 vim.keymap.set('n', '<F8>', dap.step_out)
 
 -- [TODO] keymaps for :Trouble and :ToggleTerm
--- [TODO] keymaps for beginning of line left to wrap up? w to stop at EOL! CTRL F to work in i
+-- [TODO] keymaps for beginning of line left to wrap up?
 -- [TODO] keymaps for CTRL <- and CTRL DEL in 'i', as well as CTRL S
+
+--vim.keymap.set('i', '<C-H>', '<C-w>', { desc = 'Delete the previous word' })
+vim.keymap.set('i', '<C-Del>', '<C-o>dw', { desc = 'Delete the next word' })
+
+--vim.keymap.set('n', '<C-BS>', 'db', { desc = 'Delete the previous word' })
+vim.keymap.set('n', '<C-Del>', 'dw', { desc = 'Delete the next word' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -84,6 +90,19 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+vim.keymap.set('i', '<C-h>', '<C-o><C-w><C-h>', { desc = 'Move focus to the left window' })
+vim.keymap.set('i', '<C-l>', '<C-o><C-w><C-l>', { desc = 'Move focus to the right window' })
+vim.keymap.set('i', '<C-j>', '<C-o><C-w><C-j>', { desc = 'Move focus to the lower window' })
+vim.keymap.set('i', '<C-k>', '<C-o><C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'netrw',
+  callback = function()
+    vim.api.nvim_buf_del_keymap(0, 'n', '<C-l>') -- Remove default mapping
+    vim.api.nvim_buf_set_keymap(0, 'n', '<C-l>', '<C-w><C-l>', { noremap = true, silent = true })
+  end,
+})
+
 local builtin = require 'telescope.builtin'
 -- vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
 -- vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
@@ -98,7 +117,7 @@ vim.keymap.set('n', '<leader>ps', builtin.live_grep, { desc = '[S]earch all [F]i
 -- vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
 -- Slightly advanced example of overriding default behavior and theme
-vim.keymap.set('n', '<C-f>', function()
+vim.keymap.set({ 'n', 'i' }, '<C-f>', function()
   -- You can pass additional configuration to Telescope to change the theme, layout, etc.
   builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
     winblend = 10,
