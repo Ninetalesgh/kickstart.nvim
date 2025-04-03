@@ -13,7 +13,7 @@ local cfg = {
   configurations = {
     odin = {
       {
-        name = 'Debugger',
+        name = 'Debug Odin',
         type = 'lldb',
         request = 'launch',
         cwd = '${workspaceFolder}',
@@ -21,6 +21,7 @@ local cfg = {
           local out_drop = vim.fn.system { 'mkdir', '-p', 'build' }
           local out = vim.fn.system { 'odin', 'build', '.', '-out:build/raw', '-debug' }
           if vim.v.shell_error ~= 0 then
+            vim.notify(out_drop, vim.log.levels.ERROR)
             vim.notify(out, vim.log.levels.ERROR)
             return nil
           end
@@ -28,6 +29,19 @@ local cfg = {
         end,
         stopOnEntry = false,
         args = {},
+      },
+    },
+    cpp = {
+      name = 'Debug Godot Editor',
+      type = 'lldb',
+      request = 'launch',
+      program = '${workspaceFolder}/bin/godot.linuxbsd.editor.x86_64',
+      args = {},
+      cwd = '${workspaceFolder}',
+      stopOnEntry = false,
+      runInTerminal = false,
+      env = {
+        GODOT_DEBUG = '1',
       },
     },
   },
