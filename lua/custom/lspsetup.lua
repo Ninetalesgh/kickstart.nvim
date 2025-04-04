@@ -9,6 +9,21 @@ lspconfig.ols.setup {
   },
 }
 
+local gdscript_config = {
+  name = 'gdscript',
+  cmd = { 'socat', 'stdio', 'tcp:localhost:6005' },
+  filetypes = { 'gdscript' },
+  root_dir = lspconfig.util.root_pattern('project.godot', '.git'),
+  capabilities = { textDocument = { completion = { completionItem = { snippetSupport = false } } } },
+}
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'gdscript',
+  callback = function()
+    vim.lsp.start(gdscript_config)
+  end,
+})
+
 local cfg = {
   configurations = {
     odin = {
