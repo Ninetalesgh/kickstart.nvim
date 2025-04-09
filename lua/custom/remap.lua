@@ -100,7 +100,7 @@ vim.keymap.set('i', '<C-k>', '<C-o><C-w><C-k>', { desc = 'Move focus to the uppe
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'netrw',
   callback = function()
-    vim.api.nvim_buf_del_keymap(0, 'n', '<C-l>') -- Remove default mapping
+    pcall(vim.api.nvim_buf_del_keymap, 0, 'n', '<C-l>') -- Remove default mapping
     vim.api.nvim_buf_set_keymap(0, 'n', '<C-l>', '<C-w><C-l>', { noremap = true, silent = true })
   end,
 })

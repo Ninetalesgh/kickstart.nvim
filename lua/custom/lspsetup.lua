@@ -17,18 +17,11 @@ local gdscript_config = {
   capabilities = { textDocument = { completion = { completionItem = { snippetSupport = false } } } },
 }
 
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'gdscript',
-  callback = function()
-    vim.lsp.start(gdscript_config)
-  end,
-})
-
 local cfg = {
   configurations = {
     odin = {
       {
-        name = 'Debug Odin',
+        name = 'debug odin',
         type = 'lldb',
         request = 'launch',
         cwd = '${workspaceFolder}',
@@ -47,11 +40,12 @@ local cfg = {
       },
     },
     cpp = {
-      name = 'Debug Godot Editor',
+      name = 'debug godot editor',
       type = 'lldb',
       request = 'launch',
-      program = '${workspaceFolder}/bin/godot.linuxbsd.editor.x86_64',
-      args = {},
+      program = '${workspaceFolder}/bin/godot.linuxbsd.editor.x86_64 --path ~/Desktop/repos/godot-test-project',
+      args = { '--path', vim.fn.expand '~/Desktop/repos/godot-test-project' },
+      argsExpanded = true,
       cwd = '${workspaceFolder}',
       stopOnEntry = false,
       runInTerminal = false,
@@ -62,6 +56,11 @@ local cfg = {
   },
 }
 
+-- require('dap').configurations = {}
+--package.loaded['dap'] = nil
+
+-- require('dap-lldb').configurations = {}
+-- package.loaded['dap-lldb'] = nil
 require('dap-lldb').setup(cfg)
 --[[
 local debugger = vim.fn.exepath 'lldb'
