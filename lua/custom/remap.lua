@@ -9,6 +9,7 @@ vim.keymap.set('i', '<C-q>', '<C-o>:q<CR>', { silent = true })
 -- Save buffer
 vim.keymap.set('n', '<C-s>', ':w<CR>')
 vim.keymap.set('i', '<C-s>', '<Esc>:w<CR>')
+vim.keymap.set('v', '<C-s>', '<Esc>:w<CR>')
 -- Move selection up and down
 vim.keymap.set('v', '<M-j>', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', '<M-k>', ":m '<-2<CR>gv=gv")
@@ -31,6 +32,7 @@ vim.keymap.set('n', 'Q', '<nop>')
 
 -- Select all
 vim.keymap.set('n', '<C-a>', 'ggVG')
+vim.keymap.set('i', '<C-a>', '<Esc>ggVG')
 vim.keymap.set('v', '<C-a>', '<Esc>ggVG')
 
 -- Quick fix navigation
@@ -124,7 +126,7 @@ vim.keymap.set('n', '<leader>ps', builtin.live_grep, { desc = '[S]earch all [F]i
 -- vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
 -- Slightly advanced example of overriding default behavior and theme
-vim.keymap.set({ 'n', 'i' }, '<C-f>', function()
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-f>', function()
   -- You can pass additional configuration to Telescope to change the theme, layout, etc.
   builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
     winblend = 10,
