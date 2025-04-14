@@ -11,6 +11,8 @@ vim.keymap.set('n', '<C-s>', ':w<CR>')
 vim.keymap.set('i', '<C-s>', '<Esc>:w<CR>')
 vim.keymap.set('v', '<C-s>', '<Esc>:w<CR>')
 -- Move selection up and down
+vim.keymap.set('n', '<M-j>', "v:m '>+1<CR>gv=gv<Esc>")
+vim.keymap.set('n', '<M-k>', "v:m '<-2<CR>gv=gv<Esc>")
 vim.keymap.set('v', '<M-j>', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', '<M-k>', ":m '<-2<CR>gv=gv")
 -- Append line below to current line
