@@ -28,6 +28,11 @@ vim.keymap.set('v', '<leader>y', '"+y')
 vim.keymap.set('n', '<leader>Y', '"+Y')
 -- Nah?
 vim.keymap.set('n', 'Q', '<nop>')
+
+-- Select all
+vim.keymap.set('n', '<C-a>', 'ggVG')
+vim.keymap.set('v', '<C-a>', '<Esc>ggVG')
+
 -- Quick fix navigation
 --vim.keymap.set('n', '<C-k>', '<cmd>cnext<CR>zz')
 --vim.keymap.set('n', '<C-j>', '<cmd>cprev<CR>zz')
