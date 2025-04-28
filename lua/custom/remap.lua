@@ -37,7 +37,7 @@ vim.keymap.set('n', '<C-a>', 'ggVG')
 vim.keymap.set('i', '<C-a>', '<Esc>ggVG')
 vim.keymap.set('v', '<C-a>', '<Esc>ggVG')
 
-vim.keymap.set({ 'n', 'i', 'v' }, '<C-Right>', function()
+local function next_word()
   local cur_line = vim.api.nvim_get_current_line()
   local cur_col = vim.fn.col '.'
   local rest_of_line = cur_line:sub(cur_col)
@@ -47,7 +47,20 @@ vim.keymap.set({ 'n', 'i', 'v' }, '<C-Right>', function()
     vim.cmd 'normal! g_'
     vim.cmd 'normal! l'
   end
+end
+
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-Right>', next_word, { noremap = true })
+--
+--
+--
+--
+--
+-- THESE DON'T FUCKING WOOOOOOOORK
+vim.keymap.set('i', '<C-h>', function()
+  vim.cmd 'normal! b'
 end, { noremap = true })
+vim.keymap.set('i', '<C-l>', next_word, { noremap = true })
+
 -- Quick fix navigation
 --vim.keymap.set('n', '<C-k>', '<cmd>cnext<CR>zz')
 --vim.keymap.set('n', '<C-j>', '<cmd>cprev<CR>zz')
@@ -111,11 +124,6 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-
-vim.keymap.set('i', '<C-h>', '<C-o><C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('i', '<C-l>', '<C-o><C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('i', '<C-j>', '<C-o><C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('i', '<C-k>', '<C-o><C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'netrw',
