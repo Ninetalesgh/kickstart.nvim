@@ -55,6 +55,7 @@ vim.keymap.set({ 'n', 'i', 'v' }, '<C-Right>', next_word, { noremap = true })
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'markdown',
   callback = function()
+    -- Wrap words in *
     vim.keymap.set('n', '*', function()
       local word = vim.fn.expand '<cword>'
       if word == '' then
@@ -65,7 +66,22 @@ vim.api.nvim_create_autocmd('FileType', {
       vim.cmd('normal! c*' .. word .. '*')
 
       vim.api.nvim_win_set_cursor(0, { cur_pos[1], cur_pos[2] + 1 })
-    end)
+    end, { noremap = true })
+
+    -- Get relative link from header
+    vim.keymap.set('n', '<leader>xc', function()
+      local git_root = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
+      local current_file = vim.fn.expand '%:p'
+      local relative_path = current_file:gsub(git_root .. '/', '')
+
+      local line_content = vim.fn.getline '.'
+      local header_name = line_content:gsub('^#+%s*', '')
+      local link = header_name:gsub('%s', '-'):gsub('[^%w%-]', ''):lower()
+
+      local result = '[' .. header_name .. ']' .. '(' .. relative_path .. '#' .. link .. ')'
+      print('Copied: ' .. result)
+      vim.fn.setreg('0', result)
+    end, { noremap = true })
   end,
 })
 
@@ -88,7 +104,7 @@ vim.keymap.set('i', '<C-l>', next_word, { noremap = true })
 -- Replace current word match
 vim.keymap.set('n', '<leader>s', ':%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>')
 -- Make the current file executable
-vim.keymap.set('n', '<leader>x', '<cmd>!chmod +x %<CR>', { silent = true })
+-- vim.keymap.set('n', '<leader>x', '<cmd>!chmod +x %<CR>', { silent = true })
 -- Clear highlights on search when pressing <Esc> in normal mode
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
