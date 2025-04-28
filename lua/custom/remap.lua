@@ -80,7 +80,7 @@ vim.api.nvim_create_autocmd('FileType', {
 
       local result = '[' .. header_name .. ']' .. '(' .. relative_path .. '#' .. link .. ')'
       print('Copied: ' .. result)
-      vim.fn.setreg('0', result)
+      vim.fn.setreg('"', result)
     end, { noremap = true })
   end,
 })
