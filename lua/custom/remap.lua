@@ -50,6 +50,25 @@ local function next_word()
 end
 
 vim.keymap.set({ 'n', 'i', 'v' }, '<C-Right>', next_word, { noremap = true })
+
+-- Markdown file specific
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'markdown',
+  callback = function()
+    vim.keymap.set('n', '*', function()
+      local word = vim.fn.expand '<cword>'
+      if word == '' then
+        return
+      end
+      local cur_pos = vim.api.nvim_win_get_cursor(0)
+      vim.cmd 'normal! viw'
+      vim.cmd('normal! c*' .. word .. '*')
+
+      vim.api.nvim_win_set_cursor(0, { cur_pos[1], cur_pos[2] + 1 })
+    end)
+  end,
+})
+
 --
 --
 --
