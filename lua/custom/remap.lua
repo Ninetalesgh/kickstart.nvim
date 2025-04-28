@@ -37,6 +37,17 @@ vim.keymap.set('n', '<C-a>', 'ggVG')
 vim.keymap.set('i', '<C-a>', '<Esc>ggVG')
 vim.keymap.set('v', '<C-a>', '<Esc>ggVG')
 
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-Right>', function()
+  local cur_line = vim.api.nvim_get_current_line()
+  local cur_col = vim.fn.col '.'
+  local rest_of_line = cur_line:sub(cur_col)
+  if rest_of_line:match '[^%w]+' or cur_col > #cur_line then
+    vim.cmd 'normal! w'
+  else
+    vim.cmd 'normal! g_'
+    vim.cmd 'normal! l'
+  end
+end, { noremap = true })
 -- Quick fix navigation
 --vim.keymap.set('n', '<C-k>', '<cmd>cnext<CR>zz')
 --vim.keymap.set('n', '<C-j>', '<cmd>cprev<CR>zz')
