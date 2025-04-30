@@ -37,6 +37,10 @@ vim.keymap.set('n', '<C-a>', 'ggVG')
 vim.keymap.set('i', '<C-a>', '<Esc>ggVG')
 vim.keymap.set('v', '<C-a>', '<Esc>ggVG')
 
+-- Indent
+vim.keymap.set('n', '<Tab>', 'I<Tab><Esc>', { noremap = true })
+vim.keymap.set('n', '<S-Tab>', 'I<BS><Esc>', { noremap = true })
+
 local function next_word()
   local cur_line = vim.api.nvim_get_current_line()
   local cur_col = vim.fn.col '.'
