@@ -15,6 +15,12 @@ vim.keymap.set('n', '<M-j>', "v:m '>+1<CR>gv=gv<Esc>")
 vim.keymap.set('n', '<M-k>', "v:m '<-2<CR>gv=gv<Esc>")
 vim.keymap.set('v', '<M-j>', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', '<M-k>', ":m '<-2<CR>gv=gv")
+
+vim.keymap.set('n', '<M-down>', "v:m '>+1<CR>gv=gv<Esc>")
+vim.keymap.set('n', '<M-up>', "v:m '<-2<CR>gv=gv<Esc>")
+vim.keymap.set('v', '<M-down>', ":m '>+1<CR>gv=gv")
+vim.keymap.set('v', '<M-up>', ":m '<-2<CR>gv=gv")
+
 -- Append line below to current line
 vim.keymap.set('n', 'J', 'mzJ`z')
 -- Jump with stable cursor
