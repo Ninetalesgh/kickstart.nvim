@@ -48,7 +48,7 @@ vim.keymap.set('n', '<Tab>', 'I<Tab><Esc>', { noremap = true })
 vim.keymap.set('n', '<S-Tab>', 'I<BS><Esc>', { noremap = true })
 
 -- Paste
-vim.keymap.set('i', '<C-v>', '<C-o>p', { noremap = true })
+vim.keymap.set('i', '<C-v>', '<C-o>P', { noremap = true })
 vim.keymap.set('i', '<C-z>', '<C-o>u', { noremap = true })
 vim.keymap.set('i', '<C-r>', '<C-o><C-r>', { noremap = true })
 
