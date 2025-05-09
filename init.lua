@@ -51,6 +51,10 @@ vim.opt.scrolloff = 10
 
 vim.opt.ve:append 'onemore'
 
+vim.opt.expandtab = true
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
