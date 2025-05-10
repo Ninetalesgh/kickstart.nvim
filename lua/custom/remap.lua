@@ -106,15 +106,15 @@ local function comment_line()
   local ext = vim.bo.filetype
   local current_mode = vim.fn.mode()
 
-  local cmd1 = '/^/#/'
-  local cmd2 = '/^##//'
+  local cmd1 = '/^/#/g'
+  local cmd2 = '/^##//g'
 
   if ext == 'c' or ext == 'cpp' or ext == 'h' or ext == 'hpp' then
-    cmd1 = '/^/\\/\\//'
-    cmd2 = '/^\\/\\/\\/\\///'
+    cmd1 = '/^/\\/\\//g'
+    cmd2 = '/^\\/\\/\\/\\///g'
   elseif ext == 'lua' or ext == 'bash' or ext == 'sh' then
-    cmd1 = '/^/--/'
-    cmd2 = '/^----//'
+    cmd1 = '/^/--/g'
+    cmd2 = '/^----//g'
   end
 
   local prefix = ':s'

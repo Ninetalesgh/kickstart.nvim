@@ -54,6 +54,7 @@ vim.opt.ve:append 'onemore'
 vim.opt.expandtab = true
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
