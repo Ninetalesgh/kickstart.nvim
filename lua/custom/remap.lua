@@ -100,7 +100,38 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
---
+---
+-- Comment line
+local function comment_line()
+  local ext = vim.bo.filetype
+  local current_mode = vim.fn.mode()
+
+  local cmd1 = '/^/#/'
+  local cmd2 = '/^##//'
+
+  if ext == 'c' or ext == 'cpp' or ext == 'h' or ext == 'hpp' then
+    cmd1 = '/^/\\/\\//'
+    cmd2 = '/^\\/\\/\\/\\///'
+  elseif ext == 'lua' or ext == 'bash' or ext == 'sh' then
+    cmd1 = '/^/--/'
+    cmd2 = '/^----//'
+  end
+
+  local prefix = ':s'
+  if current_mode == 'v' then
+    vim.fn.setpos("'<", vim.fn.getpos 'v')
+    vim.fn.setpos("'>", vim.fn.getpos '.')
+    prefix = ":'<,'>s"
+  elseif current_mode == 'i' then
+    prefix = 'normal! :s'
+  end
+
+  vim.cmd(prefix .. cmd1)
+  vim.cmd('silent! ' .. prefix .. cmd2)
+end
+
+vim.keymap.set({ 'n', 'i', 'v' }, '<leader>cc', comment_line, { noremap = true, silent = true })
+
 --
 --
 --
