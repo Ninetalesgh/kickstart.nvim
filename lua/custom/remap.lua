@@ -112,7 +112,7 @@ local function comment_line()
   if ext == 'c' or ext == 'cpp' or ext == 'h' or ext == 'hpp' then
     cmd1 = '/^/\\/\\//g'
     cmd2 = '/^\\/\\/\\/\\///g'
-  elseif ext == 'lua' or ext == 'bash' or ext == 'sh' then
+  elseif ext == 'lua' then
     cmd1 = '/^/--/g'
     cmd2 = '/^----//g'
   end
