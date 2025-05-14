@@ -55,16 +55,78 @@ vim.keymap.set('i', '<C-r>', '<C-o><C-r>', { noremap = true })
 local function next_word()
   local cur_line = vim.api.nvim_get_current_line()
   local cur_col = vim.fn.col '.'
-  local rest_of_line = cur_line:sub(cur_col)
-  if rest_of_line:match '[^%w]+' or cur_col > #cur_line then
+  local line_len = #cur_line + 1
+
+  if cur_col >= line_len then
     vim.cmd 'normal! w'
   else
-    vim.cmd 'normal! g_'
-    vim.cmd 'normal! l'
+    local rest = cur_line:sub(cur_col)
+    if rest:match '%w' then
+      vim.cmd 'normal! w'
+    else
+      vim.cmd 'normal! g_l'
+    end
   end
 end
 
 vim.keymap.set({ 'n', 'i', 'v' }, '<C-Right>', next_word, { noremap = true })
+
+local gPrefix = ''
+local gCursor = {}
+local function prepare_text_command()
+  gCursor = vim.fn.getpos '.'
+  local current_mode = vim.fn.mode()
+  if current_mode == 'v' then
+    gPrefix = ":'b,'es"
+  elseif current_mode == 'i' then
+    gPrefix = 'normal! :s'
+  else
+    gPrefix = ':s'
+  end
+  local pos1 = vim.fn.getpos 'v' -- [bufnum, lnum, col, off]
+  local pos2 = vim.fn.getpos '.'
+  if pos1[2] > pos2[2] or (pos1[2] == pos2[2] and pos1[3] > pos2[3]) then
+    vim.fn.setpos("'b", pos2)
+    vim.fn.setpos("'e", pos1)
+  else
+    vim.fn.setpos("'b", pos1)
+    vim.fn.setpos("'e", pos2)
+  end
+end
+
+local function indent_line()
+  local cmd1 = [[/^/  /g]]
+  prepare_text_command()
+  vim.cmd('silent! ' .. gPrefix .. cmd1)
+  vim.fn.setpos('.', gCursor)
+end
+
+local function unindent_line()
+  local cmd1 = [[/^\(  \)\|\(\t\)//g]]
+  prepare_text_command()
+  vim.cmd('silent! ' .. gPrefix .. cmd1)
+  vim.fn.setpos('.', gCursor)
+end
+vim.keymap.set({ 'n', 'i', 'v' }, '<Tab>', indent_line, { noremap = true })
+vim.keymap.set({ 'n', 'i', 'v' }, '<S-Tab>', unindent_line, { noremap = true })
+
+local function comment_line()
+  local ext = vim.bo.filetype
+  local cmd1 = [[/^/#/g]]
+  local cmd2 = [[/^#\([ \t]*\)#/\1/g]]
+  if ext == 'c' or ext == 'cpp' or ext == 'h' or ext == 'hpp' then
+    cmd1 = [[/^/\/\//g]]
+    cmd2 = [[/^\/\/\([ \t]*\)\/\//\1/g]]
+  elseif ext == 'lua' then
+    cmd1 = [[/^/--/g]]
+    cmd2 = [[/^--\([ \t]*\)--/\1/g]]
+  end
+  prepare_text_command()
+  vim.cmd(gPrefix .. cmd1)
+  vim.cmd('silent! ' .. gPrefix .. cmd2)
+  vim.fn.setpos('.', gCursor)
+end
+vim.keymap.set({ 'n', 'i', 'v' }, '<leader>cc', comment_line, { noremap = true, silent = true })
 
 -- Markdown file specific
 vim.api.nvim_create_autocmd('FileType', {
@@ -84,7 +146,7 @@ vim.api.nvim_create_autocmd('FileType', {
     end, { noremap = true })
 
     -- Get relative link from header
-    vim.keymap.set('n', '<leader>xc', function()
+    vim.keymap.set('n', '<leader>cx', function()
       local git_root = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
       local current_file = vim.fn.expand '%:p'
       local relative_path = current_file:gsub(git_root .. '/', '')
@@ -100,48 +162,7 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
----
--- Comment line
-local function comment_line()
-  local ext = vim.bo.filetype
-  local current_mode = vim.fn.mode()
-
-  local cmd1 = '/^/#/g'
-  local cmd2 = '/^##//g'
-
-  if ext == 'c' or ext == 'cpp' or ext == 'h' or ext == 'hpp' then
-    cmd1 = '/^/\\/\\//g'
-    cmd2 = '/^\\/\\/\\/\\///g'
-  elseif ext == 'lua' then
-    cmd1 = '/^/--/g'
-    cmd2 = '/^----//g'
-  end
-
-  local prefix = ':s'
-  if current_mode == 'v' then
-    vim.fn.setpos("'<", vim.fn.getpos 'v')
-    vim.fn.setpos("'>", vim.fn.getpos '.')
-    prefix = ":'<,'>s"
-  elseif current_mode == 'i' then
-    prefix = 'normal! :s'
-  end
-
-  vim.cmd(prefix .. cmd1)
-  vim.cmd('silent! ' .. prefix .. cmd2)
-end
-
-vim.keymap.set({ 'n', 'i', 'v' }, '<leader>cc', comment_line, { noremap = true, silent = true })
-
 --
---
---
---
--- THESE DON'T FUCKING WOOOOOOOORK
-vim.keymap.set('i', '<C-h>', function()
-  vim.cmd 'normal! b'
-end, { noremap = true })
-vim.keymap.set('i', '<C-l>', next_word, { noremap = true })
-
 -- Quick fix navigation
 --vim.keymap.set('n', '<C-k>', '<cmd>cnext<CR>zz')
 --vim.keymap.set('n', '<C-j>', '<cmd>cprev<CR>zz')
