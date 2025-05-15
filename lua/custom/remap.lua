@@ -6,10 +6,6 @@ vim.keymap.set('n', '<leader>gp', ':Git push<CR>')
 -- Close tab
 vim.keymap.set('n', '<C-q>', ':wq<CR>')
 vim.keymap.set('i', '<C-q>', '<C-o>:q<CR>', { silent = true })
--- Save buffer
-vim.keymap.set('n', '<C-s>', ':w<CR>')
-vim.keymap.set('i', '<C-s>', '<Esc>:w<CR>')
-vim.keymap.set('v', '<C-s>', '<Esc>:w<CR>')
 -- Move selection up and down
 vim.keymap.set('n', '<M-j>', "v:m '>+1<CR>gv=gv<Esc>")
 vim.keymap.set('n', '<M-k>', "v:m '<-2<CR>gv=gv<Esc>")
@@ -48,6 +44,18 @@ vim.keymap.set('i', '<C-v>', '<C-o>P', { noremap = true })
 vim.keymap.set('i', '<C-z>', '<C-o>u', { noremap = true })
 vim.keymap.set('i', '<C-r>', '<C-o><C-r>', { noremap = true })
 
+-- Save buffer
+local function save_current_buffer()
+  local current_mode = vim.fn.mode()
+  if current_mode == 'i' then
+    vim.cmd 'stopinsert'
+  end
+  vim.cmd('silent! ' .. [[:%s/\t/  /g]])
+  vim.cmd 'nohlsearch'
+  vim.cmd 'w'
+end
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-s>', save_current_buffer, { noremap = true })
+
 local function next_word()
   local cur_line = vim.api.nvim_get_current_line()
   local cur_col = vim.fn.col '.'
@@ -59,20 +67,19 @@ local function next_word()
     vim.cmd 'normal! g_l'
   end
 end
-
 vim.keymap.set({ 'n', 'i', 'v' }, '<C-Right>', next_word, { noremap = true })
 
 local gPrefix = ''
 local gCursor = {}
-local function prepare_text_command()
+local function prepare_text_replacement_command()
   gCursor = vim.fn.getpos '.'
   local current_mode = vim.fn.mode()
   if current_mode == 'v' then
-    gPrefix = ":'b,'es"
+    gPrefix = "silent! :'b,'es"
   elseif current_mode == 'i' then
-    gPrefix = 'normal! :s'
+    gPrefix = 'silent! normal! :s'
   else
-    gPrefix = ':s'
+    gPrefix = 'silent! :s'
   end
   local pos1 = vim.fn.getpos 'v' -- [bufnum, lnum, col, off]
   local pos2 = vim.fn.getpos '.'
@@ -87,16 +94,16 @@ end
 
 local function indent_line()
   local cmd1 = [[/^/  /g]]
-  prepare_text_command()
-  vim.cmd('silent! ' .. gPrefix .. cmd1)
+  prepare_text_replacement_command()
+  vim.cmd(gPrefix .. cmd1)
   vim.fn.setpos('.', gCursor)
   vim.cmd 'nohlsearch'
 end
 
 local function unindent_line()
   local cmd1 = [[/^\(  \)\|\(\t\)//g]]
-  prepare_text_command()
-  vim.cmd('silent! ' .. gPrefix .. cmd1)
+  prepare_text_replacement_command()
+  vim.cmd(gPrefix .. cmd1)
   vim.fn.setpos('.', gCursor)
   vim.cmd 'nohlsearch'
 end
@@ -116,9 +123,9 @@ local function comment_line()
     cmd1 = [[/^/--/g]]
     cmd2 = [[/^--\([ \t]*\)--/\1/g]]
   end
-  prepare_text_command()
+  prepare_text_replacement_command()
   vim.cmd(gPrefix .. cmd1)
-  vim.cmd('silent! ' .. gPrefix .. cmd2)
+  vim.cmd(gPrefix .. cmd2)
   vim.fn.setpos('.', gCursor)
 end
 vim.keymap.set({ 'n', 'i', 'v' }, '<leader>cc', comment_line, { noremap = true, silent = true })
