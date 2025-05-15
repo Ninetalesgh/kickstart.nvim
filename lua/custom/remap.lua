@@ -43,10 +43,6 @@ vim.keymap.set('n', '<C-a>', 'ggVG')
 vim.keymap.set('i', '<C-a>', '<Esc>ggVG')
 vim.keymap.set('v', '<C-a>', '<Esc>ggVG')
 
--- Indent
-vim.keymap.set('n', '<Tab>', 'I<Tab><Esc>', { noremap = true })
-vim.keymap.set('n', '<S-Tab>', 'I<BS><Esc>', { noremap = true })
-
 -- Paste
 vim.keymap.set('i', '<C-v>', '<C-o>P', { noremap = true })
 vim.keymap.set('i', '<C-z>', '<C-o>u', { noremap = true })
@@ -56,16 +52,11 @@ local function next_word()
   local cur_line = vim.api.nvim_get_current_line()
   local cur_col = vim.fn.col '.'
   local line_len = #cur_line + 1
-
-  if cur_col >= line_len then
+  local rest = cur_line:sub(cur_col)
+  if cur_col >= line_len or rest:find '[^%w_]' then
     vim.cmd 'normal! w'
   else
-    local rest = cur_line:sub(cur_col)
-    if rest:match '%w' then
-      vim.cmd 'normal! w'
-    else
-      vim.cmd 'normal! g_l'
-    end
+    vim.cmd 'normal! g_l'
   end
 end
 
@@ -99,6 +90,7 @@ local function indent_line()
   prepare_text_command()
   vim.cmd('silent! ' .. gPrefix .. cmd1)
   vim.fn.setpos('.', gCursor)
+  vim.cmd 'nohlsearch'
 end
 
 local function unindent_line()
@@ -106,9 +98,12 @@ local function unindent_line()
   prepare_text_command()
   vim.cmd('silent! ' .. gPrefix .. cmd1)
   vim.fn.setpos('.', gCursor)
+  vim.cmd 'nohlsearch'
 end
-vim.keymap.set({ 'n', 'i', 'v' }, '<Tab>', indent_line, { noremap = true })
-vim.keymap.set({ 'n', 'i', 'v' }, '<S-Tab>', unindent_line, { noremap = true })
+vim.keymap.set({ 'n', 'v' }, '<Tab>', indent_line, { noremap = true })
+vim.keymap.set({ 'n', 'v' }, '<S-Tab>', unindent_line, { noremap = true })
+vim.keymap.set('i', '<Tab>', '<C-o>I<Tab><Esc>', { noremap = true })
+vim.keymap.set('i', '<S-Tab>', '<C-o>I<BS><Esc>', { noremap = true })
 
 local function comment_line()
   local ext = vim.bo.filetype
