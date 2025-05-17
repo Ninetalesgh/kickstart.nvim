@@ -46,13 +46,16 @@ vim.keymap.set('i', '<C-r>', '<C-o><C-r>', { noremap = true })
 
 -- Save buffer
 local function save_current_buffer()
+  local cursor = vim.fn.getpos '.'
   local current_mode = vim.fn.mode()
   if current_mode == 'i' then
     vim.cmd 'stopinsert'
   end
   vim.cmd('silent! ' .. [[:%s/\t/  /g]])
+  vim.cmd('silent! ' .. [[:%s/ *$//g]])
   vim.cmd 'nohlsearch'
   vim.cmd 'w'
+  vim.fn.setpos('.', cursor)
 end
 vim.keymap.set({ 'n', 'i', 'v' }, '<C-s>', save_current_buffer, { noremap = true })
 
