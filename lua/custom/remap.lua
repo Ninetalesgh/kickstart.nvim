@@ -99,12 +99,12 @@ local function indent_line()
   local cmd1 = [[/^/  /g]]
   prepare_text_replacement_command()
   vim.cmd(gPrefix .. cmd1)
-  vim.fn.setpos('.', gCursor)
+  vim.fn.setpos('.', { gCursor[1], gCursor[2] + 2 })
   vim.cmd 'nohlsearch'
 end
 
 local function unindent_line()
-  local cmd1 = [[/^\(  \)\|\(\t\)//g]]
+  local cmd1 = [[/^\(  \)\|^\( \)\|^\(\t\)//]]
   prepare_text_replacement_command()
   vim.cmd(gPrefix .. cmd1)
   vim.fn.setpos('.', gCursor)
