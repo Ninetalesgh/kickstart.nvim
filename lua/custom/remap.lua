@@ -117,9 +117,10 @@ vim.keymap.set('i', '<S-Tab>', '<C-o>I<BS><Esc>', { noremap = true })
 
 local function comment_line()
   local ext = vim.bo.filetype
+  --  print(ext)
   local cmd1 = [[/^/#/g]]
   local cmd2 = [[/^#\([ \t]*\)#/\1/g]]
-  if ext == 'c' or ext == 'cpp' or ext == 'h' or ext == 'hpp' or ext == 'js' then
+  if ext == 'javascript' or ext == 'c' or ext == 'cpp' or ext == 'h' or ext == 'hpp' then
     cmd1 = [[/^/\/\//g]]
     cmd2 = [[/^\/\/\([ \t]*\)\/\//\1/g]]
   elseif ext == 'lua' then
