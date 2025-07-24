@@ -19,27 +19,7 @@ local gdscript_config = {
 
 local cfg = {
   configurations = {
-    odin = {
-      {
-        name = 'debug odin',
-        type = 'lldb',
-        request = 'launch',
-        cwd = '${workspaceFolder}',
-        program = function()
-          local out_drop = vim.fn.system { 'mkdir', '-p', 'build' }
-          local out = vim.fn.system { 'odin', 'build', '.', '-out:build/mmodin', '-debug' }
-          if vim.v.shell_error ~= 0 then
-            vim.notify(out_drop, vim.log.levels.ERROR)
-            vim.notify(out, vim.log.levels.ERROR)
-            return nil
-          end
-          return 'build/mmodin'
-        end,
-        stopOnEntry = false,
-        args = {},
-      },
-    },
-    cpp = {
+        cpp = {
       name = 'debug godot editor',
       type = 'lldb',
       request = 'launch',
