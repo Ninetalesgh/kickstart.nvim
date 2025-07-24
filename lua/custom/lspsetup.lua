@@ -27,7 +27,7 @@ local cfg = {
         cwd = '${workspaceFolder}',
         program = function()
           local out_drop = vim.fn.system { 'mkdir', '-p', 'build' }
-          local out = vim.fn.system { 'odin', 'build', '.', '-out:build/raw', '-debug' }
+          local out = vim.fn.system { 'odin', 'build', '.', '-out:build/mmodin', '-debug' }
           if vim.v.shell_error ~= 0 then
             vim.notify(out_drop, vim.log.levels.ERROR)
             vim.notify(out, vim.log.levels.ERROR)
@@ -62,6 +62,7 @@ local cfg = {
 -- require('dap-lldb').configurations = {}
 -- package.loaded['dap-lldb'] = nil
 require('dap-lldb').setup(cfg)
+vim.api.nvim_clear_autocmds { event = 'BufWritePre', pattern = '*.odin' }
 --[[
 local debugger = vim.fn.exepath 'lldb'
 if debugger ~= '' then
