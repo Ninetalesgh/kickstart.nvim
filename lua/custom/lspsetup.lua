@@ -33,7 +33,7 @@ local cfg = {
             vim.notify(out, vim.log.levels.ERROR)
             return nil
           end
-          return 'build/raw'
+          return 'build/mmodin'
         end,
         stopOnEntry = false,
         args = {},
