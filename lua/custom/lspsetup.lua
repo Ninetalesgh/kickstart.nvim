@@ -62,7 +62,6 @@ local cfg = {
 -- require('dap-lldb').configurations = {}
 -- package.loaded['dap-lldb'] = nil
 require('dap-lldb').setup(cfg)
-vim.api.nvim_clear_autocmds { event = 'BufWritePre', pattern = '*.odin' }
 --[[
 local debugger = vim.fn.exepath 'lldb'
 if debugger ~= '' then

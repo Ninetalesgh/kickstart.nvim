@@ -120,7 +120,7 @@ local function comment_line()
   --  print(ext)
   local cmd1 = [[/^/#/g]]
   local cmd2 = [[/^#\([ \t]*\)#/\1/g]]
-  if ext == 'javascript' or ext == 'c' or ext == 'cpp' or ext == 'h' or ext == 'hpp' then
+  if ext == 'javascript' or ext == 'c' or ext == 'cpp' or ext == 'h' or ext == 'hpp' or ext == 'odin' or ext == 'vs' or ext == 'fs' then
     cmd1 = [[/^/\/\//g]]
     cmd2 = [[/^\/\/\([ \t]*\)\/\//\1/g]]
   elseif ext == 'lua' then

@@ -57,7 +57,7 @@ vim.opt.shiftwidth = 2
 vim.opt.softtabstop = 2
 
 -- Termux check
-local is_termux = vim.fn.has("unix") == 1 and vim.fn.getenv("TERMUX_VERSION") ~= vim.NIL
+local is_termux = vim.fn.has 'unix' == 1 and vim.fn.getenv 'TERMUX_VERSION' ~= vim.NIL
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -498,7 +498,7 @@ require('lazy').setup({
           'stylua', -- Used to format Lua code
         })
         require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-  
+
         require('mason-lspconfig').setup {
           ensure_installed = { 'ols' },
           automatic_installation = false,
@@ -519,7 +519,7 @@ require('lazy').setup({
 
   { -- Autoformat
     'stevearc/conform.nvim',
-    event = { 'BufWritePre' },
+    event = {},
     cmd = { 'ConformInfo' },
     keys = {
       {
