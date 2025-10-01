@@ -190,15 +190,20 @@ vim.keymap.set('n', '<M-h>', '<C-o>', { desc = 'Jump back in jumplist' })
 vim.keymap.set('n', '<M-l>', '<C-i>', { desc = 'Jump forward in jumplist' })
 -- Debugger
 local dap = require 'dap'
+local dapui = require 'dapui'
 vim.keymap.set('n', '<F9>', dap.toggle_breakpoint)
 vim.keymap.set('n', '<F5>', dap.continue)
-vim.keymap.set('n', '<S-F5>', dap.run_to_cursor)
-vim.keymap.set('n', '<F6>', dap.step_over)
-vim.keymap.set('n', '<S-F6>', dap.step_back)
-vim.keymap.set('n', '<F7>', dap.step_into)
-vim.keymap.set('n', '<S-F7>', dap.step_out)
-vim.keymap.set('n', '<F8>', dap.pause)
-vim.keymap.set('n', '<S-F8>', dap.stop)
+vim.keymap.set('n', '<F8>', function()
+  dap.terminate()
+  dap.disconnect()
+  dapui.close()
+end, { desc = "Terminate debugger" })
+--vim.keymap.set('n', '<F8>', dap.run_to_cursor)
+vim.keymap.set('n', '<F10>', dap.step_over)
+vim.keymap.set('n', '<S-F10>', dap.step_back)
+vim.keymap.set('n', '<F11>', dap.step_into)
+vim.keymap.set('n', '<S-F11>', dap.step_out)
+vim.keymap.set('n', '<S-F8>', dap.pause)
 
 -- [TODO] keymaps for :Trouble and :ToggleTerm
 -- [TODO] keymaps for beginning of line left to wrap up?
