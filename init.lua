@@ -505,11 +505,18 @@ require('lazy').setup({
           handlers = {
             function(server_name)
               local server = servers[server_name] or {}
-              -- This handles overriding only values explicitly passed
-              -- by the server configuration above. Useful when disabling
-              -- certain features of an LSP (for example, turning off formatting for ts_ls)
+
+              if server_name == 'ols' then
+                server.init_options = {
+                  checker_args = '-strict-style',
+                  collection = {
+                    { name = 'shared', path = vim.fn.expand('$ODIN_ROOT') },
+                  }
+                }
+              end
+
               server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-              require('lspconfig')[server_name].setup(server)
+              vim.lsp.config()[server_name].setup(server)
             end,
           },
         }
