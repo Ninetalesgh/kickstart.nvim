@@ -818,6 +818,14 @@ require('lazy').setup({
       task = '📌',
       lazy = '💤 ',
     },
+  }, {
+  checker =  {
+      enabled = false
+    },
+    change_detection = {
+      enabled = false,
+      notify = false,
+    },
   },
 })
 
