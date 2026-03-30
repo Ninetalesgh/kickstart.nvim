@@ -1,6 +1,11 @@
 local dap = require('dap')
 
-require('dap-lldb').setup()
+dap.adapters.lldb = {
+  type = "executable",
+  command = vim.fn.stdpath("data") .. "\\mason\\packages\\codelldb\\extension\\adapter\\codelldb.exe"
+}
+--require('dap-lldb').setup()
+
 dap.configurations.c =
 {
   {
@@ -27,24 +32,27 @@ dap.configurations.c =
 
 dap.configurations.odin =
 {
---  {
---    name = 'Build & Run',
---    type = 'lldb',
---    request = 'launch',
---    cwd = '${workspaceFolder}',
---    program = function()
---      local out_drop = vim.fn.system { 'mkdir', '-p', 'build' }
---      local out = vim.fn.system { 'odin', 'build', '.', '-out:build/mmodin', '-debug' }
---      if vim.v.shell_error ~= 0 then
---        vim.notify(out_drop, vim.log.levels.ERROR)
---        vim.notify(out, vim.log.levels.ERROR)
---        return nil
---      end
---      return 'build/mmodin'
---    end,
---    stopOnEntry = false,
---    args = {},
---  },
+  {
+    name = 'Build & Run',
+    type = 'lldb',
+    request = 'launch',
+    cwd = '${workspaceFolder}',
+    program = function()
+--      local out_drop = vim.fn.system { 'mkdir', '-p', 'bin' }
+      local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
+      local exe = vim.fn.getcwd() .. (is_windows and "\\bin\\omm.exe" or "/bin/omm")
+
+      local out = vim.fn.system { exe, 'build', '-config:debug', '-platform:windows' }
+      if vim.v.shell_error ~= 0 then
+        vim.notify(out_drop, vim.log.levels.ERROR)
+        vim.notify(out, vim.log.levels.ERROR)
+        return nil
+      end
+      return "${workspaceFolder}/bin/entrypoint.exe"
+    end,
+    stopOnEntry = false,
+    args = {},
+  },
 }
 --[[
 local debugger = vim.fn.exepath 'lldb'

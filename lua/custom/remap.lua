@@ -267,3 +267,20 @@ vim.keymap.set({ 'n', 'i', 'v' }, '<C-f>', function()
     previewer = false,
   })
 end, { desc = 'Fuzzily search in current buffer' })
+
+local function build_omm()
+  vim.fn.system { 'cmd.exe', '-c', '"mkdir -p bin"' }
+  local out = vim.fn.system { 'tools/ommtools.exe', 'build', '-config:debug', '-platform:windows' }
+  if vim.v.shell_error ~= 0 then
+    vim.notify(out, vim.log.levels.ERROR)
+    return nil
+  end
+--  local out_raddbg = vim.fn.jobstart ('../raddebugger/build/raddbg.exe', { detach = true })
+  local out_raddbg = vim.fn.jobstart ('cmd.exe', { detach = true })
+  if vim.v.shell_error ~= 0 then
+    vim.notify(out_raddbg, vim.log.levels.ERROR)
+    return nil
+  end
+  vim.notify("built omm", vim.log.levels.INFO)
+end
+vim.keymap.set({ 'n' }, '<C-b>', build_omm, { noremap = true, silent = false })
